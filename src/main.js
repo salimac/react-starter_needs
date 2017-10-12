@@ -57,3 +57,4 @@ if (__DEV__) {
 // Let's Go!
 // ------------------------------------
 if (!__TEST__) render()
+export default store
