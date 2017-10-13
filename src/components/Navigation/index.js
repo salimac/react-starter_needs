@@ -1,20 +1,40 @@
-import React from 'react'
-import { IndexLink, Link } from 'react-router'
-class Navigation extends React.Component {
-  constructor (props) {
-      super(props)
-  }
-  render () {
-    const {store} = this.props
-    console.log(store && store.getState())
-    return (
-      <div>
-          <h1>React Redux Starter Kit</h1>
-          <IndexLink to='/' activeClassName='page-layout__nav-item--active'>Home</IndexLink>
-          <Link to='/counter' activeClassName='page-layout__nav-item--active'>Counter</Link>
-      </div>
-    )
+import React from "react";
+import _ from "lodash";
+import update from "react/lib/update";
+import Promise from "bluebird";
+import { connect } from "react-redux";
+import services from "../../services";
+import request from "../../util/request";
+import Navigation from "./Navigation";
+
+const TAB_CHANGED = "TAB_CHANGED";
+export function tabChange(payload){
+  return (dispatch, store) => {
+    request.post(services.login)
+      .finish((res)=>{
+        dispatch({
+          type:TAB_CHANGED,
+          payload: res.body ? res.body.tab : ""
+        })
+      });
   }
 }
-
-export default Navigation
+function handleTabChanged(state,action){
+  return update(state,{
+    tab:{
+      $set:action.payload
+    }
+  });
+}
+const NavigationDispatch = {
+    tabChange
+};
+export const ACTION_HANDLERS = {
+  TAB_CHANGED:handleTabChanged
+};
+const mapStateToProps = (state) => ({
+    tab: state.tab || "",
+    notification: state.notification,
+});
+const CNavigation = connect(mapStateToProps, NavigationDispatch)(Navigation);
+export default CNavigation;

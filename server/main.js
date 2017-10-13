@@ -38,6 +38,10 @@ if (project.env === 'development') {
   // This rewrites all routes requests to the root /index.html file
   // (ignoring file requests). If you want to implement universal
   // rendering, you'll want to remove this middleware.
+
+  app.all("**/mocks/:key/index.json", (req, res)=>{
+   res.sendFile(path.resolve(__dirname, "../mocks/", req.params.key, "./index.json"));
+  });
   app.use('*', function (req, res, next) {
     const filename = path.join(compiler.outputPath, 'index.html')
     compiler.outputFileSystem.readFile(filename, (err, result) => {

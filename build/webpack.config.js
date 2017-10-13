@@ -146,6 +146,12 @@ config.module.rules.push({
   },
 })
 
+// mocks
+// ------------------------------------
+config.module.rules.push({
+  test    : /\.(json)$/,
+  loader  : 'json-loader'
+})
 // Fonts
 // ------------------------------------
 ;[

@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
 import locationReducer from './location'
+import notificationReducer from "./notificationStore"
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
     location: locationReducer,
+    notification: notificationReducer,
     ...asyncReducers
   })
 }
