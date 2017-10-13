@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux'
-import locationReducer from './location'
+/*import locationReducer from './location'*/
+import { routerReducer as router } from "react-router-redux";
 import notificationReducer from "./notificationStore"
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
-    location: locationReducer,
+  	router,
     notification: notificationReducer,
     ...asyncReducers
   })

@@ -1,12 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import createStore from './store/createStore'
-import './styles/main.scss'
+import createBrowserHistory from "history/lib/createBrowserHistory";
+import { useRouterHistory } from "react-router";
+import { syncHistoryWithStore } from "react-router-redux";
+import createStore from './store/createStore';
+import './styles/main.scss';
 
 // Store Initialization
 // ------------------------------------
-const store = createStore(window.__INITIAL_STATE__)
-
+const browserHistory = useRouterHistory(createBrowserHistory)();
+const initialState = window.___INITIAL_STATE__;
+const store = createStore(initialState,browserHistory);
+const history = syncHistoryWithStore(browserHistory, store, {
+  selectLocationState: (state) => state.router
+});
 // Render Setup
 // ------------------------------------
 const MOUNT_NODE = document.getElementById('root')
@@ -16,7 +23,7 @@ let render = () => {
   const routes = require('./routes/index').default(store)
 
   ReactDOM.render(
-    <App store={store} routes={routes} />,
+    <App store={store} history={history} routes={routes} />,
     MOUNT_NODE
   )
 }
